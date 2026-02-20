@@ -1,10 +1,13 @@
-﻿#include <DxLib.h>
+﻿#define _WINSOCK_DEPRECATED_NO_WARNINGS
+#include <cstdio>
 #include <WinSock2.h>
+#include <DxLib.h>
 #include "Reversi.h"
+
 
 #pragma comment(lib, "ws2_32.lib")
 
-int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
+int WINAPI main(HINSTANCE, HINSTANCE, LPSTR, int)
 {
  //ウィンドウモードで起動
 	ChangeWindowMode(TRUE);
@@ -20,7 +23,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 	sockaddr_in addr;
 	addr.sin_family = AF_INET;
 	addr.sin_port = htons(12345);
-	addr.sin_addr.S_un.S_addr = inet_addr("127.0.0.1");
+	addr.sin_addr.S_un.S_addr = inet_addr("192.168.42.129"); //サーバーのIPアドレス
 
 	connect(sock, (sockaddr*)&addr, sizeof(addr));
 
@@ -32,7 +35,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 		recv(sock, buf, sizeof(buf), 0);
 
 		int x, y;
-		sscanf(buf, "%d %d", &x, &y);
+		sscanf_s(buf, "%d %d", &x, &y);
 		game.Put(x, y,1);
 		game.Draw();
 
